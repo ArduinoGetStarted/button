@@ -1,0 +1,25 @@
+#######################################
+# Syntax Coloring Map For Button
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+Button	KEYWORD1
+button	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+setDebounceTime	KEYWORD2
+getState	KEYWORD2
+getStateRaw	KEYWORD2
+isPressed	KEYWORD2
+isReleased	KEYWORD2
+
+
+#######################################
+# Constants (LITERAL1)
+#######################################
