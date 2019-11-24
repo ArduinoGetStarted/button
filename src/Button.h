@@ -29,8 +29,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef Button_h
-#define Button_h
+#ifndef ezButton_h
+#define ezButton_h
 
 #include <Arduino.h>
 
