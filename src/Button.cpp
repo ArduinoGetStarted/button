@@ -34,12 +34,16 @@
 Button::Button(int pin) {
 	btnPin = pin;
 	debounceTime = 0;
+	count = 0;
+	countMode = COUNT_FALLING;
 
 	pinMode(btnPin, INPUT_PULLUP);
 
 	previousSteadyState = digitalRead(btnPin);
 	lastSteadyState = digitalRead(btnPin);
 	lastFlickerableState = digitalRead(btnPin);
+
+	lastDebounceTime = 0;
 }
 
 void Button::setDebounceTime(unsigned long time) {
@@ -53,12 +57,14 @@ int Button::getState(void) {
 int Button::getStateRaw(void) {
 	return digitalRead(btnPin);
 }
+
 bool Button::isPressed(void) {
 	if(previousSteadyState == HIGH && lastSteadyState == LOW)
 		return true;
 	else
 		return false;
 }
+
 bool Button::isReleased(void) {
 	if(previousSteadyState == LOW && lastSteadyState == HIGH)
 		return true;
@@ -66,7 +72,19 @@ bool Button::isReleased(void) {
 		return false;
 }
 
-void Button::loop() {
+void Button::setCountMode(int mode) {
+	countMode = mode;
+}
+
+unsigned long Button::getCount(void) {
+	return count;
+}
+
+void Button::resetCount(void) {
+	count = 0;
+}
+
+void Button::loop(void) {
 	// read the state of the switch/button:
 	currentState = digitalRead(btnPin);
 
@@ -89,6 +107,19 @@ void Button::loop() {
 		// save the the steady state
 		previousSteadyState = lastSteadyState;
 		lastSteadyState = currentState;
+	}
+
+	if(previousSteadyState != lastSteadyState){
+		if(countMode == COUNT_BOTH)
+			count++;
+		else if(countMode == COUNT_FALLING){
+			if(previousSteadyState == HIGH && lastSteadyState == LOW)
+				count++;
+		}
+		else if(countMode == COUNT_RISING){
+			if(previousSteadyState == LOW && lastSteadyState == HIGH)
+				count++;
+		}
 	}
 }
 
