@@ -8,9 +8,9 @@
  * This example reads the state of a button without debounce and print it to Serial Monitor.
  */
 
-#include <Button.h>
+#include <ezButton.h>
 
-Button button(7);  // create Button object that attach to pin 7;
+ezButton button(7);  // create ezButton object that attach to pin 7;
 
 void setup() {
   Serial.begin(9600);

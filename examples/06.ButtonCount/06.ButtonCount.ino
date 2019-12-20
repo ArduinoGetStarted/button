@@ -8,13 +8,13 @@
  * This example reads the number of the pressed count of a button with debounce and print it to Serial Monitor.
  */
 
-#include <Button.h>
+#include <ezButton.h>
 
-Button button(7);  // create Button object that attach to pin 7;
+ezButton button(7);  // create ezButton object that attach to pin 7;
 
 void setup() {
   Serial.begin(9600);
-  button.setDebounceTime(100); // set debounce time to 100 milliseconds
+  button.setDebounceTime(50); // set debounce time to 50 milliseconds
   button.setCountMode(COUNT_FALLING);
 }
 

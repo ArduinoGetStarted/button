@@ -1,12 +1,12 @@
 #######################################
-# Syntax Coloring Map For Button
+# Syntax Coloring Map For ezButton
 #######################################
 
 #######################################
 # Datatypes (KEYWORD1)
 #######################################
 
-Button	KEYWORD1
+ezButton	KEYWORD1
 button	KEYWORD1
 
 #######################################

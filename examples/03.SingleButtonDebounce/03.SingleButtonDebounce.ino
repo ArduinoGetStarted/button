@@ -5,10 +5,7 @@
  *
  * Tutorial page: https://arduinogetstarted.com/tutorials/arduino-button-library
  *
- * This example:
- *   + uses debounce for a button.
- *   + reads state of a button
- *   + detects the pressed and released events of a button
+ * This example reads the state of a button with debounce and print it to Serial Monitor.
  */
 
 #include <ezButton.h>
@@ -22,9 +19,6 @@ void setup() {
 
 void loop() {
   button.loop(); // MUST call the loop() function first
-
-  int btnState = button.getState();
-  Serial.println(btnState);
 
   if(button.isPressed())
     Serial.println("The button is pressed");

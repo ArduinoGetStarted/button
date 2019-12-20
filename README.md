@@ -14,8 +14,8 @@ Features
 Available Examples
 ----------------------------
 * 01.SingleButton
-* 02.SingleButtonDebounce
-* 03.SingleButtonEvents
+* 02.SingleButtonEvents
+* 03.SingleButtonDebounce
 * 04.SingleButtonAll
 * 05.MultipleButtonAll
 * 06.ButtonCount
