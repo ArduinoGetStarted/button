@@ -10,6 +10,7 @@ Features
 * Supports the pressed and released events
 * Supports the counting (for FALLING, RISING and BOTH)
 * Easy to use with multiple buttons
+* All functions are non-blocking
 
 Available Examples
 ----------------------------
