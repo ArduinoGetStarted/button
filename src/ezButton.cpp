@@ -86,7 +86,7 @@ void ezButton::resetCount(void) {
 
 void ezButton::loop(void) {
 	// read the state of the switch/button:
-	currentState = digitalRead(btnPin);
+	int currentState = digitalRead(btnPin);
 
 	// check to see if you just pressed the button
 	// (i.e. the input went from LOW to HIGH), and you've waited long enough

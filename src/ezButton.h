@@ -49,7 +49,6 @@ class ezButton
 		int previousSteadyState;  // the previous steady state from the input pin, used to detect pressed and released event
 		int lastSteadyState;      // the last steady state from the input pin
 		int lastFlickerableState; // the last flickerable state from the input pin
-		int currentState;         // the current reading from the input pin
 
 		unsigned long lastDebounceTime; // the last time the output pin was toggled
 
