@@ -123,4 +123,3 @@ void ezButton::loop(void) {
 		}
 	}
 }
-
