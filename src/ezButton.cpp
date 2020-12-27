@@ -40,8 +40,8 @@ ezButton::ezButton(int pin) {
 	pinMode(btnPin, INPUT_PULLUP);
 
 	previousSteadyState = digitalRead(btnPin);
-	currentSteadyState = previousSteadyState;
-	previousFlickerableState = previousSteadyState;
+	lastSteadyState = digitalRead(btnPin);
+	lastFlickerableState = digitalRead(btnPin);
 
 	lastDebounceTime = 0;
 }
@@ -51,7 +51,7 @@ void ezButton::setDebounceTime(unsigned long time) {
 }
 
 int ezButton::getState(void) {
-	return currentSteadyState;
+	return lastSteadyState;
 }
 
 int ezButton::getStateRaw(void) {
@@ -59,14 +59,14 @@ int ezButton::getStateRaw(void) {
 }
 
 bool ezButton::isPressed(void) {
-	if(previousSteadyState == HIGH && currentSteadyState == LOW)
+	if(previousSteadyState == HIGH && lastSteadyState == LOW)
 		return true;
 	else
 		return false;
 }
 
 bool ezButton::isReleased(void) {
-	if(previousSteadyState == LOW && currentSteadyState == HIGH)
+	if(previousSteadyState == LOW && lastSteadyState == HIGH)
 		return true;
 	else
 		return false;
@@ -86,40 +86,40 @@ void ezButton::resetCount(void) {
 
 void ezButton::loop(void) {
 	// read the state of the switch/button:
-	int currentState = digitalRead(btnPin);
-	unsigned long timeNow = millis();
+	currentState = digitalRead(btnPin);
 
 	// check to see if you just pressed the button
 	// (i.e. the input went from LOW to HIGH), and you've waited long enough
 	// since the last press to ignore any noise:
 
 	// If the switch/button changed, due to noise or pressing:
-	if (currentState != previousFlickerableState) {
+	if (currentState != lastFlickerableState) {
 		// reset the debouncing timer
-		lastDebounceTime = timeNow;
+		lastDebounceTime = millis();
 		// save the the last flickerable state
-		previousFlickerableState = currentState;
+		lastFlickerableState = currentState;
 	}
 
-	if ((timeNow - lastDebounceTime) >= debounceTime) {
+	if ((millis() - lastDebounceTime) >= debounceTime) {
 		// whatever the reading is at, it's been there for longer than the debounce
 		// delay, so take it as the actual current state:
 
 		// save the the steady state
-		previousSteadyState = currentSteadyState;
-		currentSteadyState = currentState;
+		previousSteadyState = lastSteadyState;
+		lastSteadyState = currentState;
 	}
 
-	if(previousSteadyState != currentSteadyState){
+	if(previousSteadyState != lastSteadyState){
 		if(countMode == COUNT_BOTH)
 			count++;
 		else if(countMode == COUNT_FALLING){
-			if(previousSteadyState == HIGH && currentSteadyState == LOW)
+			if(previousSteadyState == HIGH && lastSteadyState == LOW)
 				count++;
 		}
 		else if(countMode == COUNT_RISING){
-			if(previousSteadyState == LOW && currentSteadyState == HIGH)
+			if(previousSteadyState == LOW && lastSteadyState == HIGH)
 				count++;
 		}
 	}
 }
+
