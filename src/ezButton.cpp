@@ -31,19 +31,23 @@
 
 #include <ezButton.h>
 
-ezButton::ezButton(int pin) {
+ezButton::ezButton(int pin, int mode) {
 	btnPin = pin;
 	debounceTime = 0;
 	count = 0;
 	countMode = COUNT_FALLING;
 
-	pinMode(btnPin, INPUT_PULLUP);
+	pinMode(btnPin, mode);
 
 	previousSteadyState = digitalRead(btnPin);
-	lastSteadyState = digitalRead(btnPin);
-	lastFlickerableState = digitalRead(btnPin);
+	lastSteadyState = previousSteadyState;
+	lastFlickerableState = previousSteadyState;
 
 	lastDebounceTime = 0;
+}
+
+ezButton::ezButton(int pin) {
+	ezButton(pin, INPUT_PULLUP);
 }
 
 void ezButton::setDebounceTime(unsigned long time) {
@@ -86,7 +90,8 @@ void ezButton::resetCount(void) {
 
 void ezButton::loop(void) {
 	// read the state of the switch/button:
-	currentState = digitalRead(btnPin);
+	int currentState = digitalRead(btnPin);
+	unsigned long currentTime = millis();
 
 	// check to see if you just pressed the button
 	// (i.e. the input went from LOW to HIGH), and you've waited long enough
@@ -95,12 +100,12 @@ void ezButton::loop(void) {
 	// If the switch/button changed, due to noise or pressing:
 	if (currentState != lastFlickerableState) {
 		// reset the debouncing timer
-		lastDebounceTime = millis();
+		lastDebounceTime = currentTime;
 		// save the the last flickerable state
 		lastFlickerableState = currentState;
 	}
 
-	if ((millis() - lastDebounceTime) >= debounceTime) {
+	if ((currentTime - lastDebounceTime) >= debounceTime) {
 		// whatever the reading is at, it's been there for longer than the debounce
 		// delay, so take it as the actual current state:
 
@@ -122,4 +127,3 @@ void ezButton::loop(void) {
 		}
 	}
 }
-
