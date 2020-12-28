@@ -31,6 +31,8 @@
 
 #include <ezButton.h>
 
+ezButton::ezButton(int pin): ezButton(pin, INPUT_PULLUP) {};
+
 ezButton::ezButton(int pin, int mode) {
 	btnPin = pin;
 	debounceTime = 0;
@@ -44,10 +46,6 @@ ezButton::ezButton(int pin, int mode) {
 	lastFlickerableState = previousSteadyState;
 
 	lastDebounceTime = 0;
-}
-
-ezButton::ezButton(int pin) {
-	ezButton(pin, INPUT_PULLUP);
 }
 
 void ezButton::setDebounceTime(unsigned long time) {
