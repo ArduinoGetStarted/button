@@ -14,12 +14,14 @@ Features
 
 Available Examples
 ----------------------------
-* 01.SingleButton
-* 02.SingleButtonEvents
-* 03.SingleButtonDebounce
-* 04.SingleButtonAll
-* 05.MultipleButtonAll
-* 06.ButtonCount
+* [01.SingleButton](https://arduinogetstarted.com/library/button/example/arduino-single-button)
+* [02.SingleButtonEvents](https://arduinogetstarted.com/library/button/example/arduino-single-button-events)
+* [03.SingleButtonDebounce](https://arduinogetstarted.com/library/button/example/arduino-single-button-debounce)
+* [04.SingleButtonAll](https://arduinogetstarted.com/library/button/example/arduino-single-button-all)
+* [05.MultipleButtonAll](https://arduinogetstarted.com/library/button/example/arduino-multiple-button-all)
+* [06.ButtonCount](https://arduinogetstarted.com/library/button/example/arduino-button-count)
+* [07.ButtonArray](https://arduinogetstarted.com/library/button/example/arduino-button-array)
+
 
 Available Functions
 ----------------------------
