@@ -39,7 +39,11 @@ ezButton::ezButton(int pin, int mode) {
 	count = 0;
 	countMode = COUNT_FALLING;
 
-	pinMode(btnPin, mode);
+	#if defined(ARDUINO_ARCH_STM32F1)
+		pinMode(btnPin, (WiringPinMode)mode);
+	#else
+		pinMode(btnPin, mode);
+	#endif
 
 	previousSteadyState = digitalRead(btnPin);
 	lastSteadyState = previousSteadyState;
