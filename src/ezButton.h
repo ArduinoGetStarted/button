@@ -38,10 +38,14 @@
 #define COUNT_RISING  1
 #define COUNT_BOTH    2
 
+#define ACTIVE_LOW  0
+#define ACTIVE_HIGH 1
+
 class ezButton
 {
 	private:
 		int btnPin;
+		int activeMode;
 		unsigned long debounceTime;
 		unsigned long count;
 		int countMode;
