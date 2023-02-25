@@ -31,10 +31,13 @@
 
 #include <ezButton.h>
 
-ezButton::ezButton(int pin): ezButton(pin, INPUT_PULLUP) {};
+ezButton::ezButton(int pin): ezButton(pin, INPUT_PULLUP, ACTIVE_LOW) {};
 
-ezButton::ezButton(int pin, int mode) {
+ezButton::ezButton(int pin, int mode): ezButton(pin, mode, ACTIVE_LOW) {};
+
+ezButton::ezButton(int pin, int mode, int active) {
 	btnPin = pin;
+	activeMode = active;
 	debounceTime = 0;
 	count = 0;
 	countMode = COUNT_FALLING;
@@ -61,17 +64,17 @@ int ezButton::getStateRaw(void) {
 }
 
 bool ezButton::isPressed(void) {
-	if(previousSteadyState == HIGH && lastSteadyState == LOW)
-		return true;
+	if (activeMode == ACTIVE_LOW)
+		return (previousSteadyState == HIGH && lastSteadyState == LOW);
 	else
-		return false;
+		return (previousSteadyState == LOW && lastSteadyState == HIGH);
 }
 
 bool ezButton::isReleased(void) {
-	if(previousSteadyState == LOW && lastSteadyState == HIGH)
-		return true;
+	if (activeMode == ACTIVE_LOW)
+		return (previousSteadyState == LOW && lastSteadyState == HIGH);
 	else
-		return false;
+		return (previousSteadyState == HIGH && lastSteadyState == LOW);
 }
 
 void ezButton::setCountMode(int mode) {
