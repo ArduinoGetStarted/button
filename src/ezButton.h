@@ -40,9 +40,14 @@
 
 // Constants for button modes
 #define INTERNAL_PULLUP  INPUT_PULLUP
+#ifdef INPUT_PULLDOWN
 #define INTERNAL_PULLDOWN INPUT_PULLDOWN
-#define EXTERNAL_PULLUP  2
-#define EXTERNAL_PULLDOWN 3
+#else
+#define INTERNAL_PULLDOWN INPUT
+#endif
+
+#define EXTERNAL_PULLUP   0xFE
+#define EXTERNAL_PULLDOWN 0xFF
 
 class ezButton
 {
