@@ -31,15 +31,28 @@
 
 #include <ezButton.h>
 
-ezButton::ezButton(int pin): ezButton(pin, INPUT_PULLUP) {};
+ezButton::ezButton(int pin): ezButton(pin, INTERNAL_PULLUP) {};
 
 ezButton::ezButton(int pin, int mode) {
 	btnPin = pin;
 	debounceTime = 0;
 	count = 0;
 	countMode = COUNT_FALLING;
+	
+	if (mode == INTERNAL_PULLUP || mode == INTERNAL_PULLDOWN) {
+		pinMode(btnPin, mode);
+	} else if (mode == EXTERNAL_PULLUP || mode == EXTERNAL_PULLDOWN) {
+		pinMode(btnPin, INPUT);  // External pull-up/pull-down, set as INPUT
+	}
 
-	pinMode(btnPin, mode);
+	// Set the pressed and unpressed states based on the mode
+	if (mode == INTERNAL_PULLDOWN || mode == EXTERNAL_PULLDOWN) {
+		pressedState = HIGH;
+		unpressedState = LOW;
+	} else {
+		pressedState = LOW;
+		unpressedState = HIGH;
+	}
 
 	previousSteadyState = digitalRead(btnPin);
 	lastSteadyState = previousSteadyState;
@@ -61,14 +74,14 @@ int ezButton::getStateRaw(void) {
 }
 
 bool ezButton::isPressed(void) {
-	if(previousSteadyState == HIGH && lastSteadyState == LOW)
+	if(previousSteadyState == unpressedState && lastSteadyState == pressedState)
 		return true;
 	else
 		return false;
 }
 
 bool ezButton::isReleased(void) {
-	if(previousSteadyState == LOW && lastSteadyState == HIGH)
+	if(previousSteadyState == pressedState && lastSteadyState == unpressedState)
 		return true;
 	else
 		return false;
