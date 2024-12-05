@@ -38,6 +38,7 @@ ezButton::ezButton(int pin, int mode) {
 	debounceTime = 0;
 	count = 0;
 	countMode = COUNT_FALLING;
+	transition = NEITHER;
 	
 	if (mode == INTERNAL_PULLUP || mode == INTERNAL_PULLDOWN) {
 		pinMode(btnPin, mode);
@@ -54,9 +55,8 @@ ezButton::ezButton(int pin, int mode) {
 		unpressedState = HIGH;
 	}
 
-	previousSteadyState = digitalRead(btnPin);
-	lastSteadyState = previousSteadyState;
-	lastFlickerableState = previousSteadyState;
+	lastSteadyState = digitalRead(btnPin);
+	lastFlickerableState = lastSteadyState;
 
 	lastDebounceTime = 0;
 }
@@ -74,17 +74,11 @@ int ezButton::getStateRaw(void) {
 }
 
 bool ezButton::isPressed(void) {
-	if(previousSteadyState == unpressedState && lastSteadyState == pressedState)
-		return true;
-	else
-		return false;
+	return transition == PRESSED;
 }
 
 bool ezButton::isReleased(void) {
-	if(previousSteadyState == pressedState && lastSteadyState == unpressedState)
-		return true;
-	else
-		return false;
+	return transition == UNPRESSED;
 }
 
 void ezButton::setCountMode(int mode) {
@@ -116,25 +110,21 @@ void ezButton::loop(void) {
 		lastFlickerableState = currentState;
 	}
 
-	if ((currentTime - lastDebounceTime) >= debounceTime) {
+	if ((currentTime - lastDebounceTime) >= debounceTime && currentState != lastSteadyState) {
 		// whatever the reading is at, it's been there for longer than the debounce
 		// delay, so take it as the actual current state:
 
-		// save the the steady state
-		previousSteadyState = lastSteadyState;
+		// save the the steady state and set the transition
 		lastSteadyState = currentState;
-	}
+		transition = currentState == pressedState ? PRESSED : UNPRESSED;
 
-	if(previousSteadyState != lastSteadyState){
 		if(countMode == COUNT_BOTH)
 			count++;
-		else if(countMode == COUNT_FALLING){
-			if(previousSteadyState == HIGH && lastSteadyState == LOW)
-				count++;
-		}
-		else if(countMode == COUNT_RISING){
-			if(previousSteadyState == LOW && lastSteadyState == HIGH)
-				count++;
-		}
+		else if(countMode == COUNT_FALLING && currentState == LOW)
+		 	count++;
+		else if(countMode == COUNT_RISING && currentState == HIGH)
+		 	count++;
+	} else {
+		transition = NEITHER;
 	}
 }

@@ -49,6 +49,12 @@
 #define EXTERNAL_PULLUP   0xFE
 #define EXTERNAL_PULLDOWN 0xFF
 
+enum Transition : byte {
+	NEITHER,
+	PRESSED,
+	UNPRESSED
+};
+
 class ezButton
 {
 	private:
@@ -59,9 +65,9 @@ class ezButton
 		int pressedState;     // the state when the button is considered pressed
 		int unpressedState;   // the state when the button is considered unpressed
 
-		int previousSteadyState;  // the previous steady state from the input pin, used to detect pressed and released event
-		int lastSteadyState;      // the last steady state from the input pin
+		int lastSteadyState;      // the last steady state from the input pin, used to detect pressed and released event
 		int lastFlickerableState; // the last flickerable state from the input pin
+		Transition transition;
 
 		unsigned long lastDebounceTime; // the last time the output pin was toggled
 
