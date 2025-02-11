@@ -39,3 +39,7 @@ Available Functions
 References
 ----------------------------
 * [ezButton Library Reference](https://arduinogetstarted.com/tutorials/arduino-button-library)
+
+NOTE:
+----------------------------
+* If you are using the [button module](https://www.amazon.com/dp/B0DQ3WM7K1), set the pin to input mode with external pull-down resistor using `ezButton button(pin, EXTERNAL_PULLDOWN)`. In this configuration, the module outputs **LOW** when the button is not pressed and **HIGH** when the button is pressed.
